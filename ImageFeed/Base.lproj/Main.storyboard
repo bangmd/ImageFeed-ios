@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
@@ -14,22 +14,22 @@
             <objects>
                 <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="L0l-Rl-CYo">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="59" width="430" height="839"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="201" id="IRS-hG-ozn" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="201"/>
+                                        <rect key="frame" x="0.0" y="50" width="430" height="201"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IRS-hG-ozn" id="IyO-WX-N3F">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="201"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="430" height="201"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Upi-NB-r0e" userLabel="Cell Image">
-                                                    <rect key="frame" x="16" y="4" width="361" height="193"/>
+                                                    <rect key="frame" x="16" y="4" width="398" height="193"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -38,7 +38,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="372-aH-cvL">
-                                                    <rect key="frame" x="16" y="171" width="361" height="26"/>
+                                                    <rect key="frame" x="16" y="171" width="398" height="26"/>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="27 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wuX-Ov-lkK" userLabel="Date Label">
                                                     <rect key="frame" x="32" y="175" width="95.666666666666629" height="15"/>
@@ -63,9 +63,9 @@
                                                 <constraint firstItem="Upi-NB-r0e" firstAttribute="top" secondItem="IyO-WX-N3F" secondAttribute="top" constant="4" id="Wsh-kE-xW9"/>
                                                 <constraint firstItem="372-aH-cvL" firstAttribute="top" secondItem="wuX-Ov-lkK" secondAttribute="top" constant="-3" id="bgJ-bR-MBk"/>
                                                 <constraint firstItem="qzn-Qm-IMm" firstAttribute="top" secondItem="Upi-NB-r0e" secondAttribute="top" id="bnY-6E-1tX"/>
-                                                <constraint firstItem="372-aH-cvL" firstAttribute="leading" secondItem="Upi-NB-r0e" secondAttribute="leading" id="c8d-37-v6f"/>
+                                                <constraint firstItem="Upi-NB-r0e" firstAttribute="leading" secondItem="372-aH-cvL" secondAttribute="leading" id="c8d-37-v6f"/>
                                                 <constraint firstItem="Upi-NB-r0e" firstAttribute="trailing" secondItem="372-aH-cvL" secondAttribute="trailing" id="c9C-lY-ECV"/>
-                                                <constraint firstItem="qzn-Qm-IMm" firstAttribute="trailing" secondItem="Upi-NB-r0e" secondAttribute="trailing" id="h0z-Jx-Iqy"/>
+                                                <constraint firstItem="Upi-NB-r0e" firstAttribute="trailing" secondItem="qzn-Qm-IMm" secondAttribute="trailing" id="h0z-Jx-Iqy"/>
                                                 <constraint firstItem="Upi-NB-r0e" firstAttribute="bottom" secondItem="372-aH-cvL" secondAttribute="bottom" id="hW1-Pb-Ij0"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -98,7 +98,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38.931297709923662" y="-2.1126760563380285"/>
+            <point key="canvasLocation" x="37.674418604651166" y="-2.5751072961373391"/>
         </scene>
     </scenes>
     <resources>

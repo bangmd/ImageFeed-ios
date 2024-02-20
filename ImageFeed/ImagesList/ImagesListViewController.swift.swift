@@ -45,6 +45,7 @@ class ImagesListViewController: UIViewController {
         cell.viewGradient.layer.masksToBounds = true
         cell.viewGradient.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         
+        
     }
 }
 
