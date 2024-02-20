@@ -7,19 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DBAA34032B827B36001316BF /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAA34022B827B36001316BF /* ImagesListCell.swift */; };
 		DBE458732B7D4A13009A7F90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE458722B7D4A13009A7F90 /* AppDelegate.swift */; };
 		DBE458752B7D4A13009A7F90 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE458742B7D4A13009A7F90 /* SceneDelegate.swift */; };
-		DBE458772B7D4A13009A7F90 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE458762B7D4A13009A7F90 /* ViewController.swift */; };
+		DBE458772B7D4A13009A7F90 /* ImagesListViewController.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE458762B7D4A13009A7F90 /* ImagesListViewController.swift.swift */; };
 		DBE4587A2B7D4A13009A7F90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBE458782B7D4A13009A7F90 /* Main.storyboard */; };
 		DBE4587C2B7D4A15009A7F90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBE4587B2B7D4A15009A7F90 /* Assets.xcassets */; };
 		DBE4587F2B7D4A15009A7F90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBE4587D2B7D4A15009A7F90 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DBAA34022B827B36001316BF /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		DBE4586F2B7D4A13009A7F90 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBE458722B7D4A13009A7F90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBE458742B7D4A13009A7F90 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DBE458762B7D4A13009A7F90 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DBE458762B7D4A13009A7F90 /* ImagesListViewController.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewController.swift.swift; sourceTree = "<group>"; };
 		DBE458792B7D4A13009A7F90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DBE4587B2B7D4A15009A7F90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBE4587E2B7D4A15009A7F90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -37,6 +39,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DBAA34042B827B70001316BF /* ImagesList */ = {
+			isa = PBXGroup;
+			children = (
+				DBE458762B7D4A13009A7F90 /* ImagesListViewController.swift.swift */,
+				DBAA34022B827B36001316BF /* ImagesListCell.swift */,
+			);
+			path = ImagesList;
+			sourceTree = "<group>";
+		};
 		DBE458662B7D4A13009A7F90 = {
 			isa = PBXGroup;
 			children = (
@@ -58,7 +69,7 @@
 			children = (
 				DBE458722B7D4A13009A7F90 /* AppDelegate.swift */,
 				DBE458742B7D4A13009A7F90 /* SceneDelegate.swift */,
-				DBE458762B7D4A13009A7F90 /* ViewController.swift */,
+				DBAA34042B827B70001316BF /* ImagesList */,
 				DBE458782B7D4A13009A7F90 /* Main.storyboard */,
 				DBE4587B2B7D4A15009A7F90 /* Assets.xcassets */,
 				DBE4587D2B7D4A15009A7F90 /* LaunchScreen.storyboard */,
@@ -138,7 +149,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBE458772B7D4A13009A7F90 /* ViewController.swift in Sources */,
+				DBE458772B7D4A13009A7F90 /* ImagesListViewController.swift.swift in Sources */,
+				DBAA34032B827B36001316BF /* ImagesListCell.swift in Sources */,
 				DBE458732B7D4A13009A7F90 /* AppDelegate.swift in Sources */,
 				DBE458752B7D4A13009A7F90 /* SceneDelegate.swift in Sources */,
 			);
