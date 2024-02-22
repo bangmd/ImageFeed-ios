@@ -1,7 +1,6 @@
 import UIKit
 
-class ImagesListViewController: UIViewController {
-    
+final class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
@@ -10,13 +9,16 @@ class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
         return formatter
     }()
-    
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
@@ -29,8 +31,9 @@ class ImagesListViewController: UIViewController {
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
         cell.likeButton.setImage(likeImage, for: .normal)
-        
-        
+    }
+    
+    private func createGradient(cell: ImagesListCell){
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = cell.viewGradient.bounds
         let startColor = UIColor.clear.cgColor
@@ -44,15 +47,11 @@ class ImagesListViewController: UIViewController {
         cell.viewGradient.layer.cornerRadius = 16.0
         cell.viewGradient.layer.masksToBounds = true
         cell.viewGradient.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        
-        
     }
 }
 
 extension ImagesListViewController: UITableViewDelegate{
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         guard let image = UIImage(named: photosName[indexPath.row]) else {
@@ -79,8 +78,7 @@ extension ImagesListViewController: UITableViewDataSource{
         }
         
         configCell(for: imagesListCell, with: indexPath)
+        createGradient(cell: imagesListCell)
         return imagesListCell
     }
-    
-    
 }
