@@ -3,6 +3,8 @@ import UIKit
 final class ImagesListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private let showSingleImageIdentifier = "ShowSingleImage"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +50,29 @@ final class ImagesListViewController: UIViewController {
         cell.viewGradient.layer.masksToBounds = true
         cell.viewGradient.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageIdentifier {
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
+            
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
 }
 
 extension ImagesListViewController: UITableViewDelegate{
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageIdentifier, sender: indexPath)
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         guard let image = UIImage(named: photosName[indexPath.row]) else {
@@ -82,3 +103,4 @@ extension ImagesListViewController: UITableViewDataSource{
         return imagesListCell
     }
 }
+

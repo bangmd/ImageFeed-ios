@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="iconPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="rFi-mo-qLa">
+                                <rect key="frame" x="16" y="91" width="70" height="70"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fOZ-ev-Lns">
+                                <rect key="frame" x="16" y="195" width="97" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="YP-Gray"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Nf-aY-q0L">
+                                <rect key="frame" x="16" y="221" width="76" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="YP-White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-Aq-Iod" userLabel="userName">
+                                <rect key="frame" x="16" y="169" width="168" height="20"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <color key="textColor" name="YP-White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="KCV-DR-xrL">
+                                <rect key="frame" x="349" y="114" width="20" height="22"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" name="YP-Black"/>
+                        <constraints>
+                            <constraint firstItem="rFi-mo-qLa" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="5cU-bX-XCo"/>
+                            <constraint firstItem="2Nf-aY-q0L" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="162" id="8No-6W-fAa"/>
+                            <constraint firstItem="cqz-Aq-Iod" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="110" id="9Ez-Ky-oze"/>
+                            <constraint firstItem="fOZ-ev-Lns" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="136" id="JZg-Xu-T2D"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="KCV-DR-xrL" secondAttribute="trailing" constant="24" id="Xip-Zy-L6q"/>
+                            <constraint firstItem="fOZ-ev-Lns" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="ZYF-Cq-wtr"/>
+                            <constraint firstItem="rFi-mo-qLa" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="32" id="g4g-bw-WJr"/>
+                            <constraint firstItem="2Nf-aY-q0L" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="gaM-6w-puJ"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="leading" secondItem="cqz-Aq-Iod" secondAttribute="leading" constant="-16" id="pP8-ny-beq"/>
+                            <constraint firstItem="KCV-DR-xrL" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="55" id="ti5-Hz-w8U"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-131" y="4"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Image" width="20" height="22"/>
+        <image name="iconPhoto" width="70" height="70"/>
+        <namedColor name="YP-Black">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP-Gray">
+            <color red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117641" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP-White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
