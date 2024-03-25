@@ -5,6 +5,7 @@ final class ImagesListViewController: UIViewController {
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let showSingleImageIdentifier = "ShowSingleImage"
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
