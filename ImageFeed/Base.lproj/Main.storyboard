@@ -304,15 +304,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="fTN-78-hVN">
-                                <rect key="frame" x="159" y="387" width="75" height="78.000000000000455"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="fTN-78-hVN">
+                                <rect key="frame" x="158" y="387" width="77" height="78"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="78" id="SUt-MY-6FU"/>
+                                    <constraint firstAttribute="width" constant="77" id="Ypb-kD-hiv"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="97e-LS-nMi"/>
                         <color key="backgroundColor" name="YP-Black"/>
                         <constraints>
-                            <constraint firstItem="fTN-78-hVN" firstAttribute="centerX" secondItem="97e-LS-nMi" secondAttribute="centerX" id="23c-6J-LAv"/>
-                            <constraint firstItem="fTN-78-hVN" firstAttribute="centerY" secondItem="97e-LS-nMi" secondAttribute="centerY" id="MM9-jo-9kN"/>
+                            <constraint firstItem="fTN-78-hVN" firstAttribute="centerX" secondItem="BrX-tE-Dwj" secondAttribute="centerX" id="23c-6J-LAv"/>
+                            <constraint firstItem="fTN-78-hVN" firstAttribute="centerY" secondItem="BrX-tE-Dwj" secondAttribute="centerY" id="MM9-jo-9kN"/>
                         </constraints>
                     </view>
                     <connections>
