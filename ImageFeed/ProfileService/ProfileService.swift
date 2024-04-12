@@ -7,6 +7,7 @@ final class ProfileService{
     static let shared = ProfileService()
     private(set) var profile: Profile?
     
+    private init() {}
     func makeGetRequest(_ authToken: String) -> URLRequest{
         guard let getUrl = URL(string: "https://api.unsplash.com/me") else {
             fatalError("Невозможно создать базовый URL")

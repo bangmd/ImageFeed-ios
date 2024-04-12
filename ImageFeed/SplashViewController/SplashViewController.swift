@@ -45,8 +45,7 @@ final class SplashViewController: UIViewController, UINavigationControllerDelega
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true){ [weak self] in
-            guard let self = self else { return }
-            self.fetchOAuthToken(code)
+            self?.fetchOAuthToken(code)
             UIBlockingProgressHUD.dismiss()
         }
     }
@@ -56,9 +55,8 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result{
             case .success:
-                self.switchToTabBarController()
                 guard let token = self.storage.token else { return }
-                fetchProfile(token)
+                self.fetchProfile(token)
             case .failure:
                 break
             }
@@ -72,6 +70,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result{
             case .success:
                 print("success with getting data")
+                self.switchToTabBarController()
             case .failure(_):
                 print("failed get data")
             }

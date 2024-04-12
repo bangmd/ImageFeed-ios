@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController{
         
         updateProfileDetails()
         print(userNameLabel.text)
+        print(profileService.profile?.loginName)
     }
     
     func updateProfileDetails(){
