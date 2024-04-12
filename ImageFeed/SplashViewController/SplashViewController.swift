@@ -1,7 +1,9 @@
 import UIKit
+import ProgressHUD
 
 final class SplashViewController: UIViewController, UINavigationControllerDelegate{
     private let storage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
     private let showAuthViewSegueIdentifier = "showAuthScreen"
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,17 +47,33 @@ extension SplashViewController: AuthViewControllerDelegate {
         vc.dismiss(animated: true){ [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
+            UIBlockingProgressHUD.dismiss()
         }
-        
     }
     
     private func fetchOAuthToken(_ code: String) {
         OAuth2Service().fetchOAuthTokenResponseBody(with: code) { [weak self] result in
+            guard let self = self else { return }
             switch result{
             case .success:
-                self?.switchToTabBarController()
+                self.switchToTabBarController()
+                guard let token = self.storage.token else { return }
+                fetchProfile(token)
             case .failure:
                 break
+            }
+        }
+        
+    }
+    
+    private func fetchProfile(_ token: String){
+        guard let token = self.storage.token else { return }
+        profileService.fetchProfile(token) { result in
+            switch result{
+            case .success:
+                print("success with getting data")
+            case .failure(_):
+                print("failed get data")
             }
         }
         

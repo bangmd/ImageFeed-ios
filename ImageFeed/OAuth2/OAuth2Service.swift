@@ -1,6 +1,15 @@
 import Foundation
 
 final class OAuth2Service {
+    private let urlSession = URLSession.shared
+    
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
+    init(task: URLSessionTask? = nil, lastCode: String? = nil) {
+        self.task = task
+        self.lastCode = lastCode
+    }
     
     private (set) var authToken: String?{
         get{
@@ -38,10 +47,21 @@ final class OAuth2Service {
         case codeError
     }
     
+    enum AuthServiceError: Error {
+        case invalidRequest
+    }
+    
     func fetchOAuthTokenResponseBody(with code: String, handler: @escaping (Result<String, Error>) -> Void){
+        assert(Thread.isMainThread)
+        guard lastCode != code else{
+            handler(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastCode = code
         
         let request = makeOAuthTokenRequest(code: code)
-        let session = URLSession.shared.dataTask(with: request) { data, response, error in
+        let session = urlSession.dataTask(with: request) { data, response, error in
             if let error = error{
                 DispatchQueue.main.async {
                     handler(.failure(error))
@@ -64,6 +84,8 @@ final class OAuth2Service {
                     let authToken = responseBody.accessToken
                     self.authToken = authToken
                     handler(.success(authToken))
+                    self.task = nil
+                    self.lastCode = nil
                 }
             }catch let  dataError{
                 DispatchQueue.main.async {
@@ -71,6 +93,7 @@ final class OAuth2Service {
                 }
             }
         }
+        self.task = session
         session.resume()
     }
 }

@@ -4,8 +4,11 @@ final class ProfileViewController: UIViewController{
     var userNameLabel = UILabel()
     var loginNameLabel = UILabel()
     var textLabel = UILabel()
+    private let profileService = ProfileService.shared
+    private let storage = OAuth2TokenStorage()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         addUserNameLabel()
@@ -13,12 +16,21 @@ final class ProfileViewController: UIViewController{
         addLoginNameLabel()
         addTextLabel()
         addLogoutButton()
+        
+        updateProfileDetails()
+        print(userNameLabel.text)
     }
     
+    func updateProfileDetails(){
+        guard let profile = profileService.profile else { return }
+        self.userNameLabel.text = profile.username
+        self.loginNameLabel.text = profile.loginName
+        self.textLabel.text = profile.bio
+    }
     
     func addUserNameLabel(){
         view.addSubview(userNameLabel)
-        userNameLabel.text = "Екатерина Новикова"
+        userNameLabel.text = "Екатерина Смирнова"
         userNameLabel.font = .boldSystemFont(ofSize: 23)
         userNameLabel.textColor = .ypWhite
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +53,7 @@ final class ProfileViewController: UIViewController{
     }
     
     func addLoginNameLabel(){
-        loginNameLabel.text = "@ekaterina_nov"
+        loginNameLabel.text = "@username"
         loginNameLabel.font = .systemFont(ofSize: 13)
         loginNameLabel.textColor = .ypGray
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +66,7 @@ final class ProfileViewController: UIViewController{
     }
     
     func addTextLabel(){
-        textLabel.text = "Hello, world!"
+        textLabel.text = "Some text"
         textLabel.font = .systemFont(ofSize: 13)
         textLabel.textColor = .ypWhite
         textLabel.translatesAutoresizingMaskIntoConstraints = false

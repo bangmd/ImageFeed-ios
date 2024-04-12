@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject{
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
@@ -40,16 +41,17 @@ final class AuthViewController: UIViewController{
     }
     
     private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Backward") // 1
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward") // 2
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil) // 3
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP-Black") // 4
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "Backward")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "Backward")
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP-Black")
     }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
+        UIBlockingProgressHUD.show()
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
