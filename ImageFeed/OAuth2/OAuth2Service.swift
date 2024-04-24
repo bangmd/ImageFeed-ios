@@ -2,6 +2,7 @@ import Foundation
 
 final class OAuth2Service {
     private let urlSession = URLSession.shared
+    private let networkClient = NetworkClient()
     
     private var task: URLSessionTask?
     private var lastCode: String?
@@ -40,60 +41,36 @@ final class OAuth2Service {
         request.httpMethod = "POST"
         return request
     }
-        
-    
-  
-    private enum NetworkError: Error {
-        case codeError
-    }
     
     enum AuthServiceError: Error {
         case invalidRequest
     }
     
-    func fetchOAuthTokenResponseBody(with code: String, handler: @escaping (Result<String, Error>) -> Void){
+    func fetchOAuthTokenResponseBody(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else{
-            handler(.failure(AuthServiceError.invalidRequest))
+            completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         task?.cancel()
         lastCode = code
         
         let request = makeOAuthTokenRequest(code: code)
-        let session = urlSession.dataTask(with: request) { data, response, error in
-            if let error = error{
-                DispatchQueue.main.async {
-                    handler(.failure(error))
-                }
-                return
-            }
-            
-            if let response = response as? HTTPURLResponse,
-               response.statusCode < 200 || response.statusCode >= 300 {
-                DispatchQueue.main.async {
-                    handler(.failure(NetworkError.codeError))
-                }
-                return
-            }
-            
-            guard let data = data else { return }
-            do {
-                let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                DispatchQueue.main.async {
-                    let authToken = responseBody.accessToken
-                    self.authToken = authToken
-                    handler(.success(authToken))
-                    self.task = nil
-                    self.lastCode = nil
-                }
-            }catch let  dataError{
-                DispatchQueue.main.async {
-                    handler(.failure(dataError))
-                }
+        
+        task = networkClient.objectTask(for: request) {
+            (result: Result<OAuthTokenResponseBody, Error>) in
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))
+                self.lastCode = nil
+                self.task = nil
+            case .failure(let error):
+                self.lastCode = nil
+                completion(.failure(error))
             }
         }
-        self.task = session
-        session.resume()
+        task?.resume()
     }
 }

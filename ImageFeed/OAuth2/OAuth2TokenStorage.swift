@@ -1,4 +1,5 @@
 import Foundation
+import SwiftKeychainWrapper
 
 protocol OAuth2TokenProtocol{
     var token: String? { get }
@@ -9,14 +10,19 @@ final class OAuth2TokenStorage: OAuth2TokenProtocol{
         case token
     }
     
-    private let userDefaults = UserDefaults.standard
-    
     var token: String?{
         get {
-            userDefaults.string(forKey: Keys.token.rawValue)
+            KeychainWrapper.standard.string(forKey: Keys.token.rawValue)
         }
         set{
-            userDefaults.setValue(newValue, forKey: Keys.token.rawValue)
+            guard let newValue = newValue else { return }
+            KeychainWrapper.standard.set(newValue, forKey: Keys.token.rawValue)
         }
+    }
+}
+
+extension OAuth2TokenStorage{
+    func removeToken() -> Bool{
+        KeychainWrapper.standard.removeObject(forKey: Keys.token.rawValue)
     }
 }

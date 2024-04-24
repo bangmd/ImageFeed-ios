@@ -7,28 +7,13 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 final class WebViewViewController: UIViewController{
-    
     @IBOutlet private var webView: WKWebView!
     weak var delegate: WebViewViewControllerDelegate?
     private var progressView = UIProgressView()
+    private var estimatedProgressObservation: NSKeyValueObservation?
     
     enum WebViewConstants{
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil)
-        updateProgress()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
     }
     
     override func viewDidLoad() {
@@ -36,6 +21,13 @@ final class WebViewViewController: UIViewController{
         webView.navigationDelegate = self
         loadAuthView()
         addProgressView()
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
     }
     
     override func observeValue(
@@ -61,7 +53,7 @@ final class WebViewViewController: UIViewController{
             print("urlComponents is failed")
             return
         }
-     
+        
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
