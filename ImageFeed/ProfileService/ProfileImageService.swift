@@ -8,7 +8,7 @@ final class ProfileImageService{
     static let shared = ProfileImageService()
     private init() { }
     
-    func makeGetPhotoRequest(_ authToken: String) -> URLRequest{
+    private func makeGetPhotoRequest(_ authToken: String) -> URLRequest?{
         let username = profileService.profile?.username
         
         guard let getUrl = URL(string: "https://api.unsplash.com/users/\(username ?? "")") else {
@@ -21,13 +21,14 @@ final class ProfileImageService{
         return request
     }
     
-    private enum NetworkError: Error {
-        case codeError
-    }
     
     func fetchProfileImageURL(_ authToken: String?, handler: @escaping (Result<String, Error>) -> Void){
         guard let authToken else { return }
-        let request = makeGetPhotoRequest(authToken)
+        guard let request = makeGetPhotoRequest(authToken) else{
+            assertionFailure("Error request")
+            handler(.failure(NetworkError.invalidRequest))
+            return
+        }
 
         let session = networkClient.objectTask(for: request) {
             (result: Result <UserResult, Error>) in

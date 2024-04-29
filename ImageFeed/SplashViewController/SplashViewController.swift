@@ -5,7 +5,6 @@ final class SplashViewController: UIViewController, UINavigationControllerDelega
     private let storage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private let showAuthViewSegueIdentifier = "showAuthScreen"
     private var imageView = UIImageView()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,21 +43,6 @@ final class SplashViewController: UIViewController, UINavigationControllerDelega
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-   
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == showAuthViewSegueIdentifier {
-//            guard
-//                let navigationController = segue.destination as? UINavigationController,
-//                let viewController = navigationController.viewControllers[0] as? AuthViewController
-//            else {
-//                assertionFailure("Failed to prepare for \(showAuthViewSegueIdentifier)")
-//                return
-//            }
-//            viewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
     
     private func switchToTabBarController(){
         guard let window = UIApplication.shared.windows.first else {

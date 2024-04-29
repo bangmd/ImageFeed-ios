@@ -21,7 +21,7 @@ final class OAuth2Service {
         }
     }
     
-    func makeOAuthTokenRequest(code: String) -> URLRequest{
+    func makeOAuthTokenRequest(code: String) -> URLRequest?{
         guard let baseUrl = URL(string: "https://unsplash.com") else {
             fatalError("Невозможно создать базовый URL")
         }
@@ -42,9 +42,6 @@ final class OAuth2Service {
         return request
     }
     
-    enum AuthServiceError: Error {
-        case invalidRequest
-    }
     
     func fetchOAuthTokenResponseBody(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -55,7 +52,11 @@ final class OAuth2Service {
         task?.cancel()
         lastCode = code
         
-        let request = makeOAuthTokenRequest(code: code)
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            assertionFailure("Error Reguest")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
         
         task = networkClient.objectTask(for: request) {
             (result: Result<OAuthTokenResponseBody, Error>) in

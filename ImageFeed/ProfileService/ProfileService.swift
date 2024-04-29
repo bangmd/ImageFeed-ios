@@ -9,7 +9,7 @@ final class ProfileService{
     private(set) var profile: Profile?
     private init() {}
     
-    func makeGetRequest(_ authToken: String) -> URLRequest{
+    private func makeGetRequest(_ authToken: String) -> URLRequest?{
         guard let getUrl = URL(string: "https://api.unsplash.com/me") else {
             fatalError("Невозможно создать базовый URL")
         }
@@ -20,31 +20,30 @@ final class ProfileService{
         return request
     }
     
-    private enum NetworkError: Error {
-        case codeError
-    }
-    
     func fetchProfile(_ authToken: String?, handler: @escaping (Result<Profile, Error>) -> Void){
         assert(Thread.isMainThread)
         
         guard let authToken else { return }
-        let request = makeGetRequest(authToken)
+        guard let request = makeGetRequest(authToken) else{
+            assertionFailure("Error Request")
+            handler(.failure(NetworkError.invalidRequest))
+            return
+        }
         
         task = networkClient.objectTask(for: request) {
             (result: Result<ProfileResult, Error>) in
-            switch result {
-            case .success(let body):
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let body):
                     let profile = Profile(decodedData: body)
                     self.profile = profile
                     handler(.success(profile))
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
+                case .failure(let error):
                     handler(.failure(error))
                 }
             }
         }
         task?.resume()
     }
+    
 }

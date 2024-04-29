@@ -10,7 +10,6 @@ final class AuthViewController: UIViewController{
     private let authImage = UIImageView()
     private let showWebViewSegueIdentifier = "ShowWebView"
     weak var delegate: AuthViewControllerDelegate?
-    weak var delegate1: SplashViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()

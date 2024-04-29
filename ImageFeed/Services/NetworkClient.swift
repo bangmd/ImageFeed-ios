@@ -1,16 +1,16 @@
 import Foundation
 
-class NetworkClient{
+enum NetworkError: Error {
+    case codeError
+    case httpStatusCode(Int)
+    case urlRequestError(Error)
+    case urlSessionError
+    case decodingError(Error)
+    case invalidRequest
+}
+
+final class NetworkClient{
     private let urlSession = URLSession.shared
-    
-    enum NetworkError: Error {
-        case codeError
-        case httpStatusCode(Int)
-        case urlRequestError(Error)
-        case urlSessionError
-        case decodingError(Error)
-        case invalidRequest
-    }
     
     func objectTask<T: Decodable>(
         for request: URLRequest,
