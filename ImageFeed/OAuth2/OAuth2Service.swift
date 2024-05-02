@@ -67,8 +67,9 @@ final class OAuth2Service {
                 completion(.success(authToken))
                 self.lastCode = nil
                 self.task = nil
-            case .failure(let error):
+            case .failure(let error as NSError):
                 self.lastCode = nil
+                print("[ProfileService]: \(error.domain) - код ошибки \(error.code)")
                 completion(.failure(error))
             }
         }

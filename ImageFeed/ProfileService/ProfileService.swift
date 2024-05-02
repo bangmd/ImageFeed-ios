@@ -38,7 +38,8 @@ final class ProfileService{
                     let profile = Profile(decodedData: body)
                     self.profile = profile
                     handler(.success(profile))
-                case .failure(let error):
+                case .failure(let error as NSError):
+                    print("[ProfileService]: \(error.domain) - код ошибки \(error.code)")
                     handler(.failure(error))
                 }
             }

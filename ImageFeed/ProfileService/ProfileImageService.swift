@@ -43,8 +43,9 @@ final class ProfileImageService{
                             object: self,
                             userInfo: ["URL": self.avatarURL])
                 }
-            case .failure(let error):
+            case .failure(let error as NSError):
                 DispatchQueue.main.async {
+                    print("[ProfileImageService]: \(error.domain) - код ошибки \(error.code)")
                     handler(.failure(error))
                 }
             }
