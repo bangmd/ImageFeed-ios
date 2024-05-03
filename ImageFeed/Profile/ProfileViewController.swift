@@ -33,6 +33,15 @@ final class ProfileViewController: UIViewController{
         addTextLabel()
         addLogoutButton()
         updateProfileDetails()
+        guard let token = storage.token else { return }
+        ImagesListService().fetchPhotosNextPage(token) { result in
+            switch result{
+            case .success(let body):
+                print(body)
+            case .failure(let error):
+                print("BItch I lay down")
+            }
+        }
     }
     
     private func updateAvatar(){
