@@ -1,24 +1,61 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController{
     var userNameLabel = UILabel()
     var loginNameLabel = UILabel()
     var textLabel = UILabel()
+    var iconImageView = UIImageView()
+    private let profileService = ProfileService.shared
+    private let storage = OAuth2TokenStorage()
+    private let profileImage = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ){ [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
+        
         view.backgroundColor = .ypBlack
         addUserNameLabel()
         addIconImageView()
         addLoginNameLabel()
         addTextLabel()
         addLogoutButton()
+        updateProfileDetails()
     }
     
+    private func updateAvatar(){
+        guard
+            let profileImageURL = profileImage.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        iconImageView.kf.indicatorType = .activity
+        iconImageView.kf.setImage(with: url, placeholder: UIImage(named: "personImage"))
+    }
+    
+    func updateProfileDetails(){
+        guard let profile = profileService.profile else { return }
+        self.userNameLabel.text = profile.name
+        self.loginNameLabel.text = profile.loginName
+        self.textLabel.text = profile.bio
+        updateAvatar()
+    }
     
     func addUserNameLabel(){
         view.addSubview(userNameLabel)
-        userNameLabel.text = "Екатерина Новикова"
+        userNameLabel.text = "Екатерина Смирнова"
         userNameLabel.font = .boldSystemFont(ofSize: 23)
         userNameLabel.textColor = .ypWhite
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -27,9 +64,11 @@ final class ProfileViewController: UIViewController{
     }
     
     func addIconImageView(){
-        let image = UIImage(named: "iconPhoto")
-        let iconImageView: UIImageView = UIImageView(image: image)
+        let image = UIImage(named: "personImage")
+        iconImageView = UIImageView(image: image)
         view.addSubview(iconImageView)
+        iconImageView.layer.cornerRadius = 35
+        iconImageView.clipsToBounds = true
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -41,7 +80,7 @@ final class ProfileViewController: UIViewController{
     }
     
     func addLoginNameLabel(){
-        loginNameLabel.text = "@ekaterina_nov"
+        loginNameLabel.text = "@username"
         loginNameLabel.font = .systemFont(ofSize: 13)
         loginNameLabel.textColor = .ypGray
         loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -54,7 +93,7 @@ final class ProfileViewController: UIViewController{
     }
     
     func addTextLabel(){
-        textLabel.text = "Hello, world!"
+        textLabel.text = "Some text"
         textLabel.font = .systemFont(ofSize: 13)
         textLabel.textColor = .ypWhite
         textLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -86,6 +125,7 @@ final class ProfileViewController: UIViewController{
     @objc
     private func didTapButton(){
         print("I'm just button")
+        OAuth2TokenStorage().removeToken()
     }
     
 }

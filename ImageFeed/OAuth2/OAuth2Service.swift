@@ -1,6 +1,16 @@
 import Foundation
 
 final class OAuth2Service {
+    private let urlSession = URLSession.shared
+    private let networkClient = NetworkClient()
+    
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
+    init(task: URLSessionTask? = nil, lastCode: String? = nil) {
+        self.task = task
+        self.lastCode = lastCode
+    }
     
     private (set) var authToken: String?{
         get{
@@ -11,7 +21,7 @@ final class OAuth2Service {
         }
     }
     
-    func makeOAuthTokenRequest(code: String) -> URLRequest{
+    func makeOAuthTokenRequest(code: String) -> URLRequest?{
         guard let baseUrl = URL(string: "https://unsplash.com") else {
             fatalError("Невозможно создать базовый URL")
         }
@@ -31,46 +41,38 @@ final class OAuth2Service {
         request.httpMethod = "POST"
         return request
     }
-        
     
-  
-    private enum NetworkError: Error {
-        case codeError
-    }
     
-    func fetchOAuthTokenResponseBody(with code: String, handler: @escaping (Result<String, Error>) -> Void){
+    func fetchOAuthTokenResponseBody(with code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard lastCode != code else{
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastCode = code
         
-        let request = makeOAuthTokenRequest(code: code)
-        let session = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error{
-                DispatchQueue.main.async {
-                    handler(.failure(error))
-                }
-                return
-            }
-            
-            if let response = response as? HTTPURLResponse,
-               response.statusCode < 200 || response.statusCode >= 300 {
-                DispatchQueue.main.async {
-                    handler(.failure(NetworkError.codeError))
-                }
-                return
-            }
-            
-            guard let data = data else { return }
-            do {
-                let responseBody = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                DispatchQueue.main.async {
-                    let authToken = responseBody.accessToken
-                    self.authToken = authToken
-                    handler(.success(authToken))
-                }
-            }catch let  dataError{
-                DispatchQueue.main.async {
-                    handler(.failure(dataError))
-                }
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            assertionFailure("Error Reguest")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        task = networkClient.objectTask(for: request) {
+            (result: Result<OAuthTokenResponseBody, Error>) in
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))
+                self.lastCode = nil
+                self.task = nil
+            case .failure(let error as NSError):
+                self.lastCode = nil
+                print("[ProfileService]: \(error.domain) - код ошибки \(error.code)")
+                completion(.failure(error))
             }
         }
-        session.resume()
+        task?.resume()
     }
 }
