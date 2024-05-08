@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController{
@@ -33,15 +34,6 @@ final class ProfileViewController: UIViewController{
         addTextLabel()
         addLogoutButton()
         updateProfileDetails()
-        guard let token = storage.token else { return }
-        ImagesListService().fetchPhotosNextPage(token) { result in
-            switch result{
-            case .success(let body):
-                print(body)
-            case .failure(let error):
-                print("BItch I lay down")
-            }
-        }
     }
     
     private func updateAvatar(){
@@ -64,7 +56,7 @@ final class ProfileViewController: UIViewController{
     
     func addUserNameLabel(){
         view.addSubview(userNameLabel)
-        userNameLabel.text = "Екатерина Смирнова"
+        userNameLabel.text = "Username"
         userNameLabel.font = .boldSystemFont(ofSize: 23)
         userNameLabel.textColor = .ypWhite
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -133,9 +125,50 @@ final class ProfileViewController: UIViewController{
     
     @objc
     private func didTapButton(){
-        print("I'm just button")
-        OAuth2TokenStorage().removeToken()
+        logout()
     }
     
 }
 
+private extension ProfileViewController{
+    func logout(){
+        cleanCookies()
+        resetToken()
+        resetProfileView()
+        resetPhotos()
+        switchToSplashVC()
+    }
+    
+    private func switchToSplashVC() {
+        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
+    }
+    
+    private func resetToken() {
+        guard storage.removeToken() else {
+            assertionFailure("Can't remove token")
+            return
+        }
+    }
+    
+    private func resetProfileView() {
+        self.userNameLabel.text = "Username"
+        self.loginNameLabel.text = "@username"
+        self.textLabel.text = "Some Text"
+        self.iconImageView.image = UIImage(named: "personImage")
+    }
+    
+    private func resetPhotos() {
+        ImagesListService.shared.resetPhotos()
+    }
+    
+    private func cleanCookies(){
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+}

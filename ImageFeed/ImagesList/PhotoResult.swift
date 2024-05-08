@@ -7,7 +7,8 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    let regularImageURL: String
+    var isLiked: Bool
 }
 
 struct PhotoResult: Codable{
@@ -28,9 +29,9 @@ struct PhotoResult: Codable{
 struct UrlsResult: Codable{
     let full: String?
     let thumb: String?
+    let regular: String?
 }
-//
-//struct LikeResult: Codable {
-//    let photo: PhotoResult
-//}
-//
+
+struct LikeResult: Codable {
+    let photo: PhotoResult
+}

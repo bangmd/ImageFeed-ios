@@ -110,7 +110,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="201"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Upi-NB-r0e" userLabel="Cell Image">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stubForPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Upi-NB-r0e" userLabel="Cell Image">
                                                     <rect key="frame" x="16" y="4" width="361" height="193"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -133,6 +133,9 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="like_button_off"/>
+                                                    <connections>
+                                                        <action selector="imageListCellDidTapLike:" destination="IRS-hG-ozn" eventType="touchDown" id="eib-tO-ifJ"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" name="YP-Black"/>
@@ -297,6 +300,7 @@
         <image name="download_button" width="51" height="51"/>
         <image name="iconMainActive" width="30" height="30"/>
         <image name="like_button_off" width="42" height="42"/>
+        <image name="stubForPhoto" width="343" height="370"/>
         <namedColor name="YP-Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -1,26 +1,52 @@
 import UIKit
+import ProgressHUD
+import Kingfisher
 
 final class SingleImageViewController: UIViewController{
-    
-    
     var image: UIImage? {
         didSet{
             guard isViewLoaded else { return }
-            imageView.image = image
-            guard let image = imageView.image else { return }
+            imageView.image = self.image
+            guard let image else { return }
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet var scrollView: UIScrollView!
+    var largeImageURL: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
-        guard let image = imageView.image else { return }
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        loadPhoto()
+    }
+    
+    func loadPhoto(){
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: largeImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.imageView.image = imageResult.image
+                self.imageView.frame.size = imageResult.image.size
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                showError()
+            }
+        }
+    }
+    
+    func showError(){
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let alert = UIAlertController(title: "Error", message: "Something go wrong", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Reload", style: .default){_ in 
+                self.loadPhoto()
+            }
+            alert.addAction(action)
+            present(alert, animated: true)
+        }
     }
     @IBAction private func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
