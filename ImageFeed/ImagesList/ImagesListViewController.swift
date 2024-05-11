@@ -11,7 +11,6 @@ final class ImagesListViewController: UIViewController {
     private var imageListServiceObserver: NSObjectProtocol?
     private let placeholderImage = UIImage(named: "stubForPhoto")
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
@@ -23,13 +22,6 @@ final class ImagesListViewController: UIViewController {
         return .lightContent
     }
     
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
-    
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         loadPhotoWithKingFisher(for: cell, indexPath: indexPath)
         createGradient(cell: cell)
@@ -37,7 +29,7 @@ final class ImagesListViewController: UIViewController {
             print("No date")
             return
         }
-        cell.dateLabel.text = dateFormatter.string(from: date)
+        cell.dateLabel.text = DateFormatter.dateFormatter.string(from: date)
     }
     
     private func createGradient(cell: ImagesListCell){
@@ -66,7 +58,7 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             
-            viewController.largeImageURL = URL(string: photos[indexPath.row].largeImageURL)
+            viewController.largeImageURL = photos[indexPath.row].largeImageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -101,6 +93,15 @@ final class ImagesListViewController: UIViewController {
     }
 }
 
+
+extension DateFormatter{
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
+}
 extension ImagesListViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -139,7 +140,7 @@ extension ImagesListViewController: UITableViewDataSource{
         cell.setIsLiked(photo.isLiked)
         
         if let imagesListCell = cell as? ImagesListCell {
-            if let regularURL = URL(string: photo.regularImageURL) {
+            if let regularURL = photo.regularImageURL {
                 imagesListCell.cellImage.kf.indicatorType = .activity
                 imagesListCell.cellImage.kf.setImage(with: regularURL, placeholder: placeholderImage){ [weak self] _ in
                     self?.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -168,7 +169,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 self.photos[indexPath.row].isLiked = isLiked
                 cell.setIsLiked(isLiked)
                 UIBlockingProgressHUD.dismiss()
-            case .failure(let error):
+            case .failure(_):
                 UIBlockingProgressHUD.dismiss()
                 DispatchQueue.main.async { [weak self] in
                     let alert = UIAlertController(title: "Error", message: "Something go wrong (", preferredStyle: .alert)

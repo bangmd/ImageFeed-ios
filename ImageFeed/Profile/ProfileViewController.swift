@@ -11,21 +11,11 @@ final class ProfileViewController: UIViewController{
     private let storage = OAuth2TokenStorage()
     private let profileImage = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    var animationLayers = Set<CALayer>()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ){ [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        updateAvatar()
         
         view.backgroundColor = .ypBlack
         addUserNameLabel()
@@ -33,8 +23,18 @@ final class ProfileViewController: UIViewController{
         addLoginNameLabel()
         addTextLabel()
         addLogoutButton()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ){ [weak self] _ in
+                self?.updateAvatar()
+            }
         updateProfileDetails()
     }
+    
     
     private func updateAvatar(){
         guard
@@ -125,7 +125,18 @@ final class ProfileViewController: UIViewController{
     
     @objc
     private func didTapButton(){
-        logout()
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        
+        let yesButtonAction = UIAlertAction(title: "Да", style: .default) { _ in
+            self.logout()
+        }
+        
+        let noButtonAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
+        
+        alert.addAction(yesButtonAction)
+        alert.addAction(noButtonAction)
+    
+        present(alert, animated: true, completion: nil)
     }
     
 }

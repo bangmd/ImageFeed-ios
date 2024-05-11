@@ -5,9 +5,9 @@ struct Photo {
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let regularImageURL: String
+    let thumbImageURL: URL?
+    let largeImageURL: URL?
+    let regularImageURL: URL?
     var isLiked: Bool
 }
 
@@ -27,9 +27,9 @@ struct PhotoResult: Codable{
 }
 
 struct UrlsResult: Codable{
-    let full: String?
-    let thumb: String?
-    let regular: String?
+    let full: URL?
+    let thumb: URL?
+    let regular: URL?
 }
 
 struct LikeResult: Codable {

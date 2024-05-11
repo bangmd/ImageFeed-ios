@@ -50,9 +50,9 @@ final class ImagesListService{
                             size: CGSize(width: photoResult.width, height: photoResult.height),
                             createdAt: ISO8601DateFormatter().date(from: photoResult.createdAt ?? ""),
                             welcomeDescription: photoResult.description ?? "",
-                            thumbImageURL: photoResult.urls.thumb ?? "",
-                            largeImageURL: photoResult.urls.full ?? "",
-                            regularImageURL: photoResult.urls.regular ?? "",
+                            thumbImageURL: photoResult.urls.thumb ?? nil,
+                            largeImageURL: photoResult.urls.full ?? nil,
+                            regularImageURL: photoResult.urls.regular ?? nil,
                             isLiked: photoResult.likedByUser)
                         newPhotos.append(newPhoto)
                     }

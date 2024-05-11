@@ -28,32 +28,5 @@ final class ImagesListCell: UITableViewCell {
         let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
         likeButton.setImage(likeImage, for: .normal)
     }
-    func loadCell(from photo: Photo) -> Bool {
-          var status = false
-
-//          if let photoDate = photo.createdAt {
-//              dataLabel.text = dateFormatter.string(from: photoDate)
-//          } else {
-//              dataLabel.text = ""
-//          }
-//            
-//            setIsLiked(photo.isLiked)
-
-          guard let photoURL = URL(string: photo.thumbImageURL) else { return status }
-
-            cellImage.kf.indicatorType = .activity
-            cellImage.kf.setImage(with: photoURL, placeholder: placeholderImage) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(_):
-              status = true
-            case .failure(let error):
-                cellImage.image = placeholderImage
-                debugPrint("Error: \(error.localizedDescription)")
-            }
-          }
-          return status
-        }
-    
 }
 
