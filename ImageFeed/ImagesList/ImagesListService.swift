@@ -8,7 +8,9 @@ final class ImagesListService{
     private var currentTask : URLSessionTask?
     private let authToken = OAuth2TokenStorage().token ?? nil
     static let shared = ImagesListService()
+    static var isoDateFormatter = ISO8601DateFormatter()
     private init() {}
+   
     
     private func getRequestPhoto(_ authToken: String, page: Int) -> URLRequest?{
         guard let getUrl = URL(string: "https://api.unsplash.com/photos?per_page=10&page=\(page)") else {
@@ -48,7 +50,7 @@ final class ImagesListService{
                         let newPhoto = Photo(
                             id: photoResult.id,
                             size: CGSize(width: photoResult.width, height: photoResult.height),
-                            createdAt: ISO8601DateFormatter().date(from: photoResult.createdAt ?? ""),
+                            createdAt: ImagesListService.isoDateFormatter.date(from: photoResult.createdAt ?? ""),
                             welcomeDescription: photoResult.description ?? "",
                             thumbImageURL: photoResult.urls.thumb ?? nil,
                             largeImageURL: photoResult.urls.full ?? nil,
