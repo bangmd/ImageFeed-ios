@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController{
@@ -10,21 +11,11 @@ final class ProfileViewController: UIViewController{
     private let storage = OAuth2TokenStorage()
     private let profileImage = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    var animationLayers = Set<CALayer>()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ){ [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        updateAvatar()
         
         view.backgroundColor = .ypBlack
         addUserNameLabel()
@@ -32,8 +23,18 @@ final class ProfileViewController: UIViewController{
         addLoginNameLabel()
         addTextLabel()
         addLogoutButton()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ){ [weak self] _ in
+                self?.updateAvatar()
+            }
         updateProfileDetails()
     }
+    
     
     private func updateAvatar(){
         guard
@@ -55,7 +56,7 @@ final class ProfileViewController: UIViewController{
     
     func addUserNameLabel(){
         view.addSubview(userNameLabel)
-        userNameLabel.text = "Екатерина Смирнова"
+        userNameLabel.text = "Username"
         userNameLabel.font = .boldSystemFont(ofSize: 23)
         userNameLabel.textColor = .ypWhite
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -124,9 +125,61 @@ final class ProfileViewController: UIViewController{
     
     @objc
     private func didTapButton(){
-        print("I'm just button")
-        OAuth2TokenStorage().removeToken()
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        
+        let yesButtonAction = UIAlertAction(title: "Да", style: .default) { _ in
+            self.logout()
+        }
+        
+        let noButtonAction = UIAlertAction(title: "Нет", style: .default, handler: nil)
+        
+        alert.addAction(yesButtonAction)
+        alert.addAction(noButtonAction)
+    
+        present(alert, animated: true, completion: nil)
     }
     
 }
 
+private extension ProfileViewController{
+    func logout(){
+        cleanCookies()
+        resetToken()
+        resetProfileView()
+        resetPhotos()
+        switchToSplashVC()
+    }
+    
+    private func switchToSplashVC() {
+        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
+    }
+    
+    private func resetToken() {
+        guard storage.removeToken() else {
+            assertionFailure("Can't remove token")
+            return
+        }
+    }
+    
+    private func resetProfileView() {
+        self.userNameLabel.text = "Username"
+        self.loginNameLabel.text = "@username"
+        self.textLabel.text = "Some Text"
+        self.iconImageView.image = UIImage(named: "personImage")
+    }
+    
+    private func resetPhotos() {
+        ImagesListService.shared.resetPhotos()
+    }
+    
+    private func cleanCookies(){
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+}
