@@ -14,9 +14,5 @@ final class ImagesListTests: XCTestCase{
         
         //then
         XCTAssertTrue(presenter.didFetchPhotosNextPageCalled)
-    }
-    
-    
-    
-    
+    }    
 }

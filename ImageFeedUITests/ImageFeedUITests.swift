@@ -6,6 +6,7 @@ final class ImageFeedUITests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
+        app.launchArguments = ["UITEST"]
         app.launch()
     }
     

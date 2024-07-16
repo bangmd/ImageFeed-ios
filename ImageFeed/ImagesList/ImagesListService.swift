@@ -22,7 +22,7 @@ final class ImagesListService{
         return request
     }
     
-    func fetchPhotosNextPage(completion: (() -> Void)? = nil){
+    func fetchPhotosNextPage(){
         assert(Thread.isMainThread)
         
         guard currentTask == nil else {
