@@ -15,6 +15,7 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     private var photos: [Photo] = []
     private let imagesListService = ImagesListService.shared
     private let placeholderImage = UIImage(named: "stubForPhoto")
+    private var isLoadingData = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,8 +143,11 @@ extension ImagesListViewController: UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == photos.count{
-            presenter?.setupImageListService()
+        if indexPath.row + 1 == photos.count && !isLoadingData{
+            isLoadingData = true
+            imagesListService.fetchPhotosNextPage() {
+                self.isLoadingData = false
+            }
         }
     }
 }

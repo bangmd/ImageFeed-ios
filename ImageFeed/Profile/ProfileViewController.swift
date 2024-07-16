@@ -9,10 +9,10 @@ public protocol ProfileViewControllerProtocol: AnyObject{
 
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol{
     var presenter: ProfileViewPresenterProtocol?
-    var userNameLabel = UILabel()
-    var loginNameLabel = UILabel()
-    var textLabel = UILabel()
-    var iconImageView = UIImageView()
+    private var userNameLabel = UILabel()
+    private var loginNameLabel = UILabel()
+    private var textLabel = UILabel()
+    private var iconImageView = UIImageView()
     private var profileImageServiceObserver: NSObjectProtocol?
     var animationLayers = Set<CALayer>()
     
