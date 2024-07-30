@@ -2,20 +2,26 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: UIViewController {
+public protocol ImagesListViewControllerProtocol: AnyObject{
+    var presenter: ImagesListPresenterProtocol? { get set }
+    func updateTableViewAnimated()
+}
+
+final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol{
+    var presenter: ImagesListPresenterProtocol?
     @IBOutlet private var tableView: UITableView!
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let showSingleImageIdentifier = "ShowSingleImage"
     private var photos: [Photo] = []
     private let imagesListService = ImagesListService.shared
-    private var imageListServiceObserver: NSObjectProtocol?
     private let placeholderImage = UIImage(named: "stubForPhoto")
+    private var isLoadingData = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter = ImagesListPresenter(view: self)
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        setUpImageListService()
-        setupNotificationObserver()
+        presenter?.viewDidLoad()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -25,7 +31,7 @@ final class ImagesListViewController: UIViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         loadPhotoWithKingFisher(for: cell, indexPath: indexPath)
         createGradient(cell: cell)
-        guard let date = photos[indexPath.row].createdAt else { 
+        guard let date = photos[indexPath.row].createdAt else {
             print("No date")
             return
         }
@@ -64,21 +70,7 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    func setUpImageListService(){
-        imagesListService.fetchPhotosNextPage()
-        updateTableViewAnimated()
-    }
-    
-    func setupNotificationObserver(){
-        imageListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main,
-            using: { [weak self] _ in
-                self?.updateTableViewAnimated()
-            })
-    }
-    private func updateTableViewAnimated() {
+    func updateTableViewAnimated() {
         DispatchQueue.main.async {
             let oldCount = self.photos.count
             let newCount = self.imagesListService.photos.count
@@ -151,8 +143,8 @@ extension ImagesListViewController: UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == photos.count{
-            imagesListService.fetchPhotosNextPage()
+        if indexPath.row + 1 == photos.count && !ProcessInfo().arguments.contains("UITEST"){
+            presenter?.setupImageListService()
         }
     }
 }
